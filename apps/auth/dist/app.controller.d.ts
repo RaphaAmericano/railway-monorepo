@@ -1,7 +1,4 @@
-import { AppService } from './app.service';
+import { KafkaMessage } from '@nestjs/microservices/external/kafka.interface';
 export declare class AppController {
-    private readonly appService;
-    constructor(appService: AppService);
-    getHello(): string;
-    create(value: any): any;
+    consumer(message: KafkaMessage): void;
 }

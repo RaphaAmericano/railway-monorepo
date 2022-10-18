@@ -9,16 +9,19 @@ async function bootstrap() {
         transport: microservices_1.Transport.KAFKA,
         options: {
             client: {
-                clientId: 'auth',
                 brokers: [
                     `${process.env.UPSTASH_KAFKA_REST_URL}:${process.env.UPSTASH_KAFKA_REST_PORT}`,
                 ],
-            },
-            consumer: {
-                groupId: `microservice`,
+                ssl: true,
+                sasl: {
+                    mechanism: process.env.UPSTASH_KAFKA_REST_MECHANISM,
+                    username: process.env.UPSTASH_KAFKA_REST_USERNAME,
+                    password: process.env.UPSTASH_KAFKA_REST_PASSWORD,
+                },
             },
         },
     });
+    await app.startAllMicroservices();
     await app.listen(process.env.PORT || 3001);
 }
 bootstrap();
