@@ -9,14 +9,34 @@ var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.AppController = void 0;
+exports.NotesService = void 0;
 const common_1 = require("@nestjs/common");
-let AppController = class AppController {
-    constructor() { }
+const prisma_service_1 = require("../prisma/prisma.service");
+let NotesService = class NotesService {
+    constructor(prisma) {
+        this.prisma = prisma;
+    }
+    create(data) {
+        return this.prisma.note.create({
+            data
+        });
+    }
+    findAll() {
+        return `This action returns all notes`;
+    }
+    findOne(id) {
+        return `This action returns a #${id} note`;
+    }
+    update(id, updateNoteDto) {
+        return `This action updates a #${id} note`;
+    }
+    remove(id) {
+        return `This action removes a #${id} note`;
+    }
 };
-AppController = __decorate([
-    (0, common_1.Controller)('auth'),
-    __metadata("design:paramtypes", [])
-], AppController);
-exports.AppController = AppController;
-//# sourceMappingURL=app.controller.js.map
+NotesService = __decorate([
+    (0, common_1.Injectable)(),
+    __metadata("design:paramtypes", [prisma_service_1.PrismaService])
+], NotesService);
+exports.NotesService = NotesService;
+//# sourceMappingURL=notes.service.js.map

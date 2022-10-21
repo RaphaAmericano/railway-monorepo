@@ -1,35 +1,25 @@
-import { Controller, Get, Inject } from '@nestjs/common';
-import { MessagePattern, Payload } from '@nestjs/microservices';
+import { Controller } from '@nestjs/common';
+import {
+  Ctx,
+  KafkaContext,
+  MessagePattern,
+  Payload,
+} from '@nestjs/microservices';
 import { Producer } from '@nestjs/microservices/external/kafka.interface';
 import { AppService } from './app.service';
 
-@Controller()
+@Controller('auth')
 export class AppController {
-  constructor(
-    private readonly appService: AppService, // @Inject('KAFKA_PRODUCER') private kafkaProducer: Producer,
-  ) {}
+  constructor() {}
 
-  @Get()
-  getHello(): string {
-    return this.appService.getHello();
-  }
-
-  @Get('auth')
-  async auth() {
-    // await this.kafkaProducer.send({
-    //   topic: 'auth',
-    //   messages: [
-    //     {
-    //       key: 'auth',
-    //       value: 'String teste',
-    //     },
-    //   ],
-    // });
-    return 'auth';
-  }
-
-  @MessagePattern('test')
-  getTest(@Payload() message) {
-    return 'Funcionou';
-  }
+  // @MessagePattern('teste')
+  // readMessage(@Payload() message: any, @Ctx() context: KafkaContext) {
+  //   console.log(message);
+  //   const originalMessage = context.getMessage();
+  //   const response = `Receiveng message from ${JSON.stringify(
+  //     originalMessage.value,
+  //   )}`;
+  //   console.log(response);
+  //   return response;
+  // }
 }
