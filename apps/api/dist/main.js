@@ -6,19 +6,10 @@ const app_module_1 = require("./app.module");
 async function bootstrap() {
     const app = await core_1.NestFactory.create(app_module_1.AppModule);
     app.connectMicroservice({
-        transport: microservices_1.Transport.KAFKA,
+        tranport: microservices_1.Transport.TCP,
         options: {
-            client: {
-                brokers: [
-                    `${process.env.UPSTASH_KAFKA_REST_URL}:${process.env.UPSTASH_KAFKA_REST_PORT}`,
-                ],
-                ssl: true,
-                sasl: {
-                    mechanism: process.env.UPSTASH_KAFKA_REST_MECHANISM,
-                    username: process.env.UPSTASH_KAFKA_REST_USERNAME,
-                    password: process.env.UPSTASH_KAFKA_REST_PASSWORD,
-                },
-            },
+            host: 'localhost',
+            port: process.env.PORT,
         },
     });
     await app.startAllMicroservices();

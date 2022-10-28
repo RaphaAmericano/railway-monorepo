@@ -18,7 +18,7 @@ let NotesService = class NotesService {
     }
     create(data) {
         return this.prisma.note.create({
-            data
+            data,
         });
     }
     findAll() {

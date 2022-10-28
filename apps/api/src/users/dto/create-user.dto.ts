@@ -1,3 +1,10 @@
 import { Prisma } from '@prisma/client';
 
-export type CreateUserDto = Prisma.UserCreateInput;
+export class CreateUserDto implements Prisma.UserCreateInput {
+  constructor(
+    public name: string,
+    public email: string,
+    public password: string,
+    public createDate?: string | Date,
+  ) {}
+}

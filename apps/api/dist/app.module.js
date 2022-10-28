@@ -13,6 +13,7 @@ const app_controller_1 = require("./app.controller");
 const app_service_1 = require("./app.service");
 const prisma_service_1 = require("./prisma/prisma.service");
 const notes_module_1 = require("./notes/notes.module");
+const users_module_1 = require("./users/users.module");
 let AppModule = class AppModule {
 };
 AppModule = __decorate([
@@ -20,6 +21,7 @@ AppModule = __decorate([
         imports: [
             config_1.ConfigModule.forRoot(),
             notes_module_1.NotesModule,
+            users_module_1.UsersModule,
         ],
         controllers: [app_controller_1.AppController],
         providers: [app_service_1.AppService, prisma_service_1.PrismaService],

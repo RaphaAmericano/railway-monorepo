@@ -9,15 +9,46 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.AppModule = void 0;
 const common_1 = require("@nestjs/common");
 const config_1 = require("@nestjs/config");
+const jwt_1 = require("@nestjs/jwt");
+const microservices_1 = require("@nestjs/microservices");
+const passport_1 = require("@nestjs/passport");
 const app_controller_1 = require("./app.controller");
 const app_service_1 = require("./app.service");
+const jwt_strategy_1 = require("./strategies/jwt.strategy");
+const local_strategy_1 = require("./strategies/local.strategy");
 let AppModule = class AppModule {
 };
 AppModule = __decorate([
     (0, common_1.Module)({
-        imports: [config_1.ConfigModule.forRoot()],
+        imports: [
+            config_1.ConfigModule.forRoot(),
+            microservices_1.ClientsModule.register([
+                {
+                    name: 'AUTH_SERVICE',
+                    transport: microservices_1.Transport.KAFKA,
+                    options: {
+                        client: {
+                            brokers: [
+                                `${process.env.UPSTASH_KAFKA_REST_URL}:${process.env.UPSTASH_KAFKA_REST_PORT}`,
+                            ],
+                            ssl: true,
+                            sasl: {
+                                mechanism: 'scram-sha-256',
+                                username: process.env.UPSTASH_KAFKA_REST_USERNAME,
+                                password: process.env.UPSTASH_KAFKA_REST_PASSWORD,
+                            },
+                        },
+                    },
+                },
+            ]),
+            passport_1.PassportModule,
+            jwt_1.JwtModule.register({
+                privateKey: process.env.JWT_SECRET_KEY,
+                signOptions: { expiresIn: '600s' },
+            }),
+        ],
         controllers: [app_controller_1.AppController],
-        providers: [app_service_1.AppService],
+        providers: [app_service_1.AppService, local_strategy_1.LocalStrategy, jwt_strategy_1.JwtStrategy],
     })
 ], AppModule);
 exports.AppModule = AppModule;
